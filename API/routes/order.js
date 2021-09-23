@@ -104,7 +104,7 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
                     }
                 },
             ]);
-            res.send(income);
+            res.status(200).json(income);
         } else {
             const income = await Order.aggregate([
                 {
@@ -131,7 +131,7 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
                     }
                 },
             ]);
-            res.send(income);
+            res.status(200).json(income);
         }
     } catch (err) {
         res.status(500).json(err);
