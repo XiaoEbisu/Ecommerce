@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { collection } = require("../models/User");
 
+// VERIFY IF LOGGED IN
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers.token;
 
@@ -18,6 +19,7 @@ const verifyToken = (req, res, next) => {
     }
 };
 
+// VERIFY USER'S RIGHTS
 const verifyTokenAndAuthorization = (req, res, next) => {
     verifyToken(req, res, () => {
         if (req.user.id === req.params.id || req.user.isAdmin) { 
@@ -29,6 +31,7 @@ const verifyTokenAndAuthorization = (req, res, next) => {
     });
 };
 
+// VERIFY IF ADMIN
 const verifyTokenAndAdmin = (req, res, next) => {
     verifyToken(req, res, () => {
         if (req.user.isAdmin) {

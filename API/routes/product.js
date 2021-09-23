@@ -3,7 +3,6 @@ const {
     verifyTokenAndAuthorization,
     verifyTokenAndAdmin
 } = require("./verifyToken");
-const CryptoJS = require("crypto-js");
 
 const router = require("express").Router();
 
@@ -45,14 +44,22 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
     }
 });
 
-// GET ALL USERS or 5 NEW USERS
+// GET ALL PRODUCTS
 router.get("/", async (req, res) => {
     const qNew = req.query.new; //if route have "?new=true" then get 5 new products
     const qCategory = req.query.category = req.query.category; //filter by a category
     try {
         let products;
 
-        if (qNew) {
+        if (qNew && qCategory) {
+            products = await Product.find({
+                categories: {
+                    $in: [qCategory],
+                },
+            }).sort({
+                createdAt: -1
+            }).limit(5)
+        } else if (qNew) {
             products = await Product.find().sort({
                 createdAt: -1
             }).limit(5)
