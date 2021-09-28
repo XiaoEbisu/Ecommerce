@@ -2,7 +2,9 @@ import {
   ArrowBackIosRounded,
   ArrowForwardIosRounded,
 } from "@material-ui/icons";
+import { useState } from "react";
 import styled from "styled-components";
+import { sliderItems } from "../data";
 
 const Container = styled.div`
   width: 100%;
@@ -29,30 +31,46 @@ const Arrow = styled.div`
   right: ${(pros) => pros.direction === "right" && "20px"};
   cursor: pointer;
   opacity: 0.5;
+  z-index: 2;
 `;
 
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
+  transition: all 1.5s ease;
+  transform: translateX(${(props) => props.slideIndex * -100}vw);
+`;
+
+const SlideContainer = styled.div`
+  width: 100vw;
+  height: 80vh;
+  display:flex;
+`;
+
+const DivBlock = styled.div`
+  width: 10vw;
+  height: 100%;
 `;
 
 const Slide = styled.div`
-  width: 85vw;
-  height: 85vh;
+  width: 80vw;
+  height: 80vh;
   display: flex;
-  margin: 5vh auto 5vh auto;
+  margin: 10vh;
   background-color: #${(props) => props.bg};
 `;
 
 const ImgContainer = styled.div`
-    height: 100%;
-    flex: 1;
+  height: 100%;
+  flex: 1;
+  justify-content:center;
 `;
 
 const Image = styled.img`
-  margin: 50px;
+  margin: 50px auto 50px auto;
   height: 80%;
+  display:block;
 `;
 
 const InfoContainer = styled.div`
@@ -60,8 +78,8 @@ const InfoContainer = styled.div`
 `;
 
 const InfoWrapper = styled.div`
-margin: 50px;
-`
+  margin: 50px;
+`;
 
 const Title = styled.h1`
   font-size: 70px;
@@ -83,27 +101,43 @@ const Button = styled.button`
 `;
 
 const Slider = () => {
+  const [slideIndex, setSlideIndex] = useState(0);
+  const handleClick = (direction) => {
+    if (direction == "left") {
+      setSlideIndex(slideIndex > 0 ? slideIndex - 1 : sliderItems.length - 1);
+    } else {
+      setSlideIndex(slideIndex < sliderItems.length - 1 ? slideIndex + 1 : 0);
+    }
+  };
+
   return (
     <Container>
-      <Arrow direction="left">
+      <Arrow direction="left" onClick={() => handleClick("left")}>
         <ArrowBackIosRounded />
       </Arrow>
-      <Wrapper>
-        <Slide bg="fff4f1">
-          <ImgContainer>
-            <Image src="https://tricocotier.com/storage/2021/07/dinette-crochet.jpg"></Image>
-          </ImgContainer>
-          <InfoContainer>
-              <InfoWrapper>
-            <Title>Summer Sale!</Title>
-            <Desc>GET 30% FOR NEW ARRIVALS</Desc>
-            <Button>SHOP NOW</Button>
-            </InfoWrapper>
-          </InfoContainer>
-        </Slide>
+      <Wrapper slideIndex={slideIndex}>
+        {sliderItems.map((item) => (
+          <SlideContainer>
+            <DivBlock></DivBlock>
+            <Slide bg={item.bg}>
+              <ImgContainer>
+                <Image src={item.img}></Image>
+              </ImgContainer>
+              <InfoContainer>
+                <InfoWrapper>
+                  <Title>{item.title}</Title>
+                  <Desc>{item.desc}</Desc>
+                  <Button>SHOP NOW</Button>
+                </InfoWrapper>
+              </InfoContainer>
+            </Slide>
+            <DivBlock></DivBlock>
+          </SlideContainer>
+        ))}
+        ;
       </Wrapper>
 
-      <Arrow direction="right">
+      <Arrow direction="right" onClick={() => handleClick("right")}>
         <ArrowForwardIosRounded />
       </Arrow>
     </Container>
