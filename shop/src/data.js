@@ -43,34 +43,34 @@ export const sliderItems = [
   export const popularProducts = [
     {
       id:1,
-      img:"https://d3o2e4jr3mxnm3.cloudfront.net/Mens-Jake-Guitar-Vintage-Crusher-Tee_68382_1_lg.png",
+      img:"https://m.media-amazon.com/images/I/719wMBZ1neL._AC_SL1500_.jpg",
     },
     {
       id:2,
-      img:"https://cdn.shopify.com/s/files/1/0101/4832/products/Angela_Natural_Tee.png?v=1606780388",
+      img:"https://cdn.shopify.com/s/files/1/0510/8819/5783/products/81ouvvni1wl-sy355_600x.jpg?v=1606897546",
     },
     {
       id:3,
-      img:"https://www.prada.com/content/dam/pradanux_products/U/UCS/UCS319/1YOTF010O/UCS319_1YOT_F010O_S_182_SLF.png",
+      img:"https://homelealass.com/wp-content/uploads/2016/08/Crochet-Hooks-scaled.jpg",
     },
     {
       id:4,
-      img:"https://www.burdastyle.com/pub/media/catalog/product/cache/7bd3727382ce0a860b68816435d76e26/107/BUS-PAT-BURTE-1320516/1170x1470_BS_2016_05_132_front.png",
+      img:"https://cf.shopee.ph/file/a05597286eb0dd234476b3ba93ab59cf",
     },
     {
       id:5,
-      img:"https://images.ctfassets.net/5gvckmvm9289/3BlDoZxSSjqAvv1jBJP7TH/65f9a95484117730ace42abf64e89572/Noissue-x-Creatsy-Tote-Bag-Mockup-Bundle-_4_-2.png",
+      img:"https://sc04.alicdn.com/kf/HTB1xkIqasnrK1RjSspk761uvXXav.png",
     },
     {
       id:6,
-      img:"https://d3o2e4jr3mxnm3.cloudfront.net/Rocket-Vintage-Chill-Cap_66374_1_lg.png",
+      img:"https://cdn.shopify.com/s/files/1/2195/2237/products/P1012146_800x.jpg?v=1615102304",
     },
     {
       id:7,
-      img:"https://www.vintageindustries.nl/download_front/qympzk1762/2217_Arrow_Jacket_Forest.png",
+      img:"https://www.hellowonderful.co/ckfinder/userfiles/images/IMG_1520_02_medium2.jpg",
     },
     {
       id:8,
-      img:"https://www.pngarts.com/files/3/Women-Jacket-PNG-High-Quality-Image.png",
+      img:"https://1.bp.blogspot.com/-8N-iKM666nY/Uqu2lnCZA6I/AAAAAAAAHE8/_0DoD4f5fqU/s1600/PolarBear5.jpg",
     },
   ]
