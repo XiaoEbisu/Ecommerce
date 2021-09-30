@@ -5,11 +5,29 @@ import {
   Twitter,
   YouTube,
   ThumbUp,
+  Phone,
+  MailOutline,
 } from "@material-ui/icons";
+import {
+  faCcMastercard,
+  faCcVisa,
+  faCcPaypal,
+  faCcStripe,
+} from "@fortawesome/free-brands-svg-icons";
+
+import //faPaypal
+"@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Container = styled.div`
   display: flex;
+  height: 50vh;
   background-color: #1697a6;
+`;
+
+const FooterContainer = styled.div`
+  display: flex;
+  padding: 20px;
 `;
 
 const Left = styled.div`
@@ -39,6 +57,7 @@ const SocialIcon = styled.div`
   justify-content: center;
   margin: 10px;
   cursor: pointer;
+  overflow: hidden;
 
   &:hover {
     color: #ffb3ae;
@@ -56,18 +75,29 @@ const Center = styled.div`
   justify-content: center;
 `;
 
+const LinkItem = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const Image = styled.img`
   width: 70%;
-  cursor: pointer;
 
   &:hover {
-    transform: scale(1.3);
+    transform: scale(1.1);
     transition: all 0.5s ease-in-out;
   }
 `;
 
 const Right = styled.div`
   flex: 1;
+  padding: 20px;
+`;
+
+const Column = styled.div`
+  float: left;
+  width: 50%;
 `;
 
 const Title = styled.h3`
@@ -84,53 +114,90 @@ const List = styled.ul`
   justify-content: center;
 `;
 
-
 const ListItem = styled.li`
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  font-weight: 500;
+
+  &:hover {
+    color: #ffb3ae;
+    text-shadow: 1px 5px 5px #000000;
+    transform: all 0.5s ease;
+  }
 `;
 
 const Footer = () => {
   return (
     <Container>
-      <Left>
-        <Logo>Seppeo.</Logo>
-        <Desc>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </Desc>
-        <SocialContainer>
-          <SocialIcon>
-            <Facebook />
-          </SocialIcon>
-          <SocialIcon>
-            <Instagram />
-          </SocialIcon>
-          <SocialIcon>
-            <Twitter />
-          </SocialIcon>
-          <SocialIcon>
-            <YouTube />
-          </SocialIcon>
-        </SocialContainer>
-      </Left>
-      <Center>
-        <Image src="/seppeo_no_border.png" />
-      </Center>
-      <Right>
-        <Title>Check it out!</Title>
-        <List>
-          <ListItem>Home</ListItem>
-          <ListItem>Cart</ListItem>
-          <ListItem>
-            Best seller <ThumbUp style={{ verticalAlign : "bottom" }} />
-          </ListItem>
-          <ListItem>My account</ListItem>
-          <ListItem>Wishlist</ListItem>
-          <ListItem>Terms</ListItem>
-        </List>
-      </Right>
+      <FooterContainer>
+        <Left>
+          <Logo>Seppeo.</Logo>
+          <Desc>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat.
+          </Desc>
+          <SocialContainer>
+            <SocialIcon>
+              <Facebook />
+            </SocialIcon>
+            <SocialIcon>
+              <Instagram />
+            </SocialIcon>
+            <SocialIcon>
+              <Twitter />
+            </SocialIcon>
+            <SocialIcon>
+              <YouTube />
+            </SocialIcon>
+          </SocialContainer>
+        </Left>
+        <Center>
+          <LinkItem href="#">
+            <Image src="/seppeo_no_border.png" />
+          </LinkItem>
+        </Center>
+        <Right>
+          <Column>
+            <Title>Check it out!</Title>
+            <List>
+              <ListItem>Home</ListItem>
+              <ListItem>Cart</ListItem>
+              <ListItem>
+                Best seller <ThumbUp style={{ verticalAlign: "bottom", marginLeft: "10px" }} />
+              </ListItem>
+              <ListItem>My account</ListItem>
+              <ListItem>Wishlist</ListItem>
+              <ListItem>Terms</ListItem>
+            </List>
+          </Column>
+          <Column>
+            <Title>Contact</Title>
+            <List>
+              <ListItem>
+                <Phone style={{ verticalAlign: "bottom", marginRight: "10px" }} /> +(00) 12 34 56 78
+                90
+              </ListItem>
+              <ListItem>
+                <MailOutline style={{ verticalAlign: "bottom", marginRight: "10px" }} />{" "}
+                contact@seppeo.shop
+              </ListItem>
+              <SocialContainer>
+                <SocialIcon>
+                  <FontAwesomeIcon icon={faCcMastercard} size="lg" />
+                </SocialIcon>
+                <SocialIcon>
+                  <FontAwesomeIcon icon={faCcVisa} size="lg" />
+                </SocialIcon>
+                <SocialIcon>
+                  <FontAwesomeIcon icon={faCcPaypal} size="lg" />
+                </SocialIcon>
+              </SocialContainer>
+            </List>
+          </Column>
+        </Right>
+      </FooterContainer>
     </Container>
   );
 };

@@ -2,7 +2,7 @@ import { Email } from "@material-ui/icons";
 import styled from "styled-components";
 
 const Container = styled.div`
-  height: 40vh;
+  height: 50vh;
   background-color: #ffb3ae;
   display: flex;
   align-items: center;
