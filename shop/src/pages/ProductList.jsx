@@ -32,7 +32,7 @@ const Select = styled.select`
 `;
 
 const Option = styled.option`
-font-weight: 600;
+  font-weight: 600;
 `;
 
 const ProductList = () => {
