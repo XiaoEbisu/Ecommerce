@@ -4,7 +4,10 @@ import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import Newletter from "../components/Newletter";
-
+import { useLocation } from "react-router";
+import { useState, useEffect } from "react";
+import { publicRequest } from "../requestMethods";
+import { MULTICOLOR } from "../cst";
 const Container = styled.div``;
 
 const Wrapper = styled.div`
@@ -19,7 +22,7 @@ const ImgContainer = styled.div`
 const Image = styled.img`
   width: 100%;
   height: 90vh;
-  object-fit: cover;
+  object-fit: scale-down;
 `;
 
 const WrapperInfo = styled.div`
@@ -64,14 +67,18 @@ const FilterColor = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: ${(props) => props.color};
+  background: ${(props) =>
+    props.color === MULTICOLOR
+      ? "linear-gradient(130deg, red,orange,yellow,green,blue,violet)"
+      : props.color};
   border: 1px solid black;
   margin: 0px 5px;
   cursor: pointer;
 
   &:hover {
     transform: scale(1.3);
-    transition: all 0.5s ease;
+    transition: all 0.2s ease;
+    opacity: 1;
   }
 `;
 
@@ -80,8 +87,7 @@ const FilterSize = styled.select`
   padding: 5px;
 `;
 
-const FilterSizeOption = styled.option`
-`;
+const FilterSizeOption = styled.option``;
 
 const AddContainer = styled.div`
   display: flex;
@@ -115,7 +121,7 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #19B3C8;
+    background-color: #19b3c8;
     color: white;
     transform: scale(1.1);
     transition: all 0.2s ease;
@@ -123,57 +129,76 @@ const Button = styled.button`
 `;
 
 const Product = () => {
+  //take category from pathname
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
+
+  const [product, setProduct] = useState({});
+  const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const getProduct = async () => {
+      try {
+        const res = await publicRequest.get("/products/find/" + id);
+        setProduct(res.data);
+      } catch {}
+    };
+    getProduct();
+  }, [id]);
+
+  const handleQuantity = (type) => {
+    if (type === "dec") {
+      quantity > 1 && setQuantity(quantity - 1);
+    } else {
+      setQuantity(quantity + 1);
+    }
+  };
+
   return (
     <Container>
       <Navbar />
       <Announcement />
       <Wrapper>
         <ImgContainer>
-          <Image src="https://i.etsystatic.com/12316004/r/il/321d8b/2621497143/il_fullxfull.2621497143_ttwq.jpg" />
+          <Image src={product.img} />
         </ImgContainer>
         <WrapperInfo>
           <InfoContainer>
-            <Title>Chenille yarn</Title>
-            <Desc>
-              This Chenille Yarn is a wonderful material for any snuggly
-              handmade home decor products. The soft polyester chenille fabric
-              composition is tufted unlike any other type of yarn. It is
-              naturally resistant to dirt,creates a beautiful multi-textural
-              look, leaving you with a perpetually luxurious piece of work.
-              Ideal for making blankets, rugs, pillows, and pet beds doll making
-              and even hats. This chenille crochet yarn feels like wonderful
-              with high quality material and crafts, you won't be disappinted
-              with this yarn after you buy it. <br />
-              Recommended needle size is US 7 (4.5mm). Suggested crochet hook
-              size is H-8 (5mm) Product Feature: 100% <br />
-              Polyester chenille yarn Super soft worsted yarn Fluffy Luxurious
-              velvet yarn
-            </Desc>
-            <Price>3 €</Price>
+            <Title>{product.title}</Title>
+            <Desc>{product.desc}</Desc>
+            <Price>{product.price} €</Price>
             <FilterContainer>
               <Filter>
                 <FilterTitle>Color</FilterTitle>
-                <FilterColor color="black" />
-                <FilterColor color="white" />
-                <FilterColor color="Lavender" />
-                <FilterColor color="#fae1dd" />
-                <FilterColor color="green" />
+                {product.color?.map((c) => (
+                  <FilterColor
+                    className={
+                      c == color ? "selected-color" : "not-selected-color"
+                    }
+                    color={c}
+                    key={c}
+                    onClick={() => setColor(c)}
+                  />
+                ))}
               </Filter>
               <Filter>
                 <FilterTitle>Size</FilterTitle>
-                <FilterSize>
-                  <FilterSizeOption> 50g </FilterSizeOption>
-                  <FilterSizeOption> 100g </FilterSizeOption>
-                  <FilterSizeOption> 200g </FilterSizeOption>
+                <FilterSize onChange={(e) => setSize(e.target.value)}>
+                  {product.size?.map((s) => (
+                    <FilterSizeOption key={s}>{s}</FilterSizeOption>
+                  ))}
                 </FilterSize>
               </Filter>
             </FilterContainer>
             <AddContainer>
               <AmountContainer>
-                <Remove />
-                <Amount>1</Amount>
-                <Add />
-              </AmountContainer>
+                <Remove onClick={() => handleQuantity("dec")} />
+                <Amount>{quantity}</Amount>
+                <Add onClick={() => handleQuantity("inc")} />
+              </AmountContainer>  
               <Button>ADD TO CART</Button>
             </AddContainer>
           </InfoContainer>

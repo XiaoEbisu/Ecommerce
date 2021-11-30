@@ -1,4 +1,8 @@
 import styled from "styled-components";
+import { mobile } from "../Responsive";
+import {
+  Link
+} from "react-router-dom";
 
 const Container = styled.div`
   flex: 1;
@@ -12,6 +16,8 @@ const Image = styled.img`
   height: 100%;
   object-fit: cover;
   border-radius: 5%;
+
+  ${mobile({ height: "30vh" })}
 `;
 
 const Info = styled.div`
@@ -24,6 +30,7 @@ const Info = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  
 `;
 
 const Title = styled.h1`
@@ -31,7 +38,9 @@ const Title = styled.h1`
   color: #ffc24b;
   text-shadow: 4px 4px 10px #000000;
   margin-bottom: 20px;
+  ${mobile({ fontSize: "90px" })}
 `;
+
 const Button = styled.button`
   border: none;
   padding: 10px;
@@ -51,11 +60,13 @@ const Button = styled.button`
 const CategoryItems = ({ item }) => {
   return (
     <Container>
+      <Link to={`/products/${item.cat}`}>
       <Image src={item.img} />
       <Info>
         <Title>{item.title}</Title>
         <Button>SHOP NOW</Button>
       </Info>
+      </Link>
     </Container>
   );
 };

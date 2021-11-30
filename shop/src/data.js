@@ -27,16 +27,19 @@ export const sliderItems = [
       id: 1,
       img: "https://www.thesprucecrafts.com/thmb/Ftxz8d29IKcGlDrJbNgE5l66ugI=/2128x1197/smart/filters:no_upscale()/GettyImages-143947808-5b51332f46e0fb003788f1ea.jpg",
       title: "Hooks",
+      cat: "hook"
     },
     {
       id: 2,
-      img: "https://yarn-cdn-weblinc.netdna-ssl.com/media/W1siZiIsIjIwMjEvMDcvMjEvMDcvNTgvMjEvODM1L0Nsb3NldXAgQXNzb3J0ZWQgVmFsbGV5IFlhcm5zLmpwZyJdLFsicCIsIm9wdGltIl1d/Closeup%20Assorted%20Valley%20Yarns.jpg?sha=e4e64a8e750318e1",
+      img: "https://cdn.shopify.com/s/files/1/0650/3615/files/LaBienAimee2_1000x1000.jpg?v=1628110534",
       title: "Yarns",
+      cat: "yarn"
     },
     {
       id: 3,
       img: "https://images.immediate.co.uk/production/volatile/sites/32/2020/02/top-20-amigurumi-patterns-header-726d251.jpg?quality=90&resize=768,574",
       title: "Patterns",
+      cat: "pattern"
     },
   ];
 

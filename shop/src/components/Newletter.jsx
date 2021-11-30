@@ -1,5 +1,6 @@
 import { Email } from "@material-ui/icons";
 import styled from "styled-components";
+import { mobile } from "../Responsive";
 
 const Container = styled.div`
   height: 50vh;
@@ -19,6 +20,8 @@ const Desc = styled.div`
   font-size: 24px;
   font-weight: 300;
   margin-bottom: 20px;
+
+  ${mobile({ textAlign: "center" })}
 `;
 
 const InputContainer = styled.div`
@@ -29,6 +32,8 @@ const InputContainer = styled.div`
   justify-content: space-between;
   border-radius: 10px;
   overflow: hidden;
+
+  ${mobile({ width: "80%" })}
   
   &:focus {
     background-color: white;
@@ -42,6 +47,8 @@ const Input = styled.input`
   margin-left: 30px;
   font-size: 20px;
   font-weight: 500;
+
+  ${mobile({ width: "30%" })}
 
   &:focus {
     outline: none;
@@ -62,6 +69,8 @@ const Button = styled.button`
   justify-content: center;
   display: flex;
   cursor: pointer;
+
+  ${mobile({ flex: 4 })}
 
   &:hover {
     color: black;

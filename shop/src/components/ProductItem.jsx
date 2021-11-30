@@ -4,6 +4,8 @@ import {
   ShoppingCartOutlined,
 } from "@material-ui/icons";
 import styled from "styled-components";
+import { mobile } from "../Responsive";
+import { Link } from "react-router-dom";
 
 const Info = styled.div`
   opacity: 0;
@@ -25,6 +27,7 @@ const Container = styled.div`
   flex: 1;
   margin: 5px;
   min-width: 350px;
+  max-width: 350px;
   height: 350px;
   display: flex;
   align-items: center;
@@ -43,11 +46,14 @@ const Circle = styled.div`
   height: 330px;
   border-radius: 50%;
   background: white;
-  position: relative;
+  position: absolute;
   align-items: center;
   justify-content: center;
   display: flex;
   overflow: hidden;
+
+  ${mobile({ width: "320px",
+  height: "280px"  })};
 `;
 
 const Image = styled.img`
@@ -80,14 +86,16 @@ const ProductItem = ({ item }) => {
   return (
     <Container>
       <Circle>
-      <Image src={item.img} />
+        <Image src={item.img} />
       </Circle>
       <Info>
         <Icon bg="ef233c">
           <FavoriteBorder />
         </Icon>
         <Icon>
+          <Link to={`/product/${item._id}`} style={{ textDecoration: 'none', color: 'Black'}}>
           <SearchOutlined />
+          </Link>
         </Icon>
         <Icon bg="bde0fe">
           <ShoppingCartOutlined />

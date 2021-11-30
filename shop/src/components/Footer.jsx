@@ -18,16 +18,20 @@ import {
 import //faPaypal
 "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { mobile } from "../Responsive";
 
 const Container = styled.div`
   display: flex;
   height: 50vh;
   background-color: #1697a6;
+
+  ${mobile({ flexDirection: "column"  })}
 `;
 
 const FooterContainer = styled.div`
   display: flex;
   padding: 20px;
+  ${mobile({ flexDirection: "column"  })}
 `;
 
 const Left = styled.div`
@@ -73,6 +77,8 @@ const Center = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  ${mobile({ display: "none" })};
 `;
 
 const LinkItem = styled.a`

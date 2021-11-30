@@ -78,6 +78,7 @@ const Button = styled.button`
   padding: 15px 20px;
   color: white;
   cursor: pointer;
+  margin-top: 10px;
   
   background: linear-gradient(to left, #fff4f1 50%, #0e606b 50%);
   background-size: 200%;
