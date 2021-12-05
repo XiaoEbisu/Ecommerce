@@ -1,14 +1,11 @@
 import { Badge, makeStyles } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
-import {
-  Search,
-  ShoppingCartOutlined,
-} from "@material-ui/icons";
+import { Search, ShoppingCartOutlined } from "@material-ui/icons";
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../Responsive";
 import { Link } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   height: 60px;
@@ -42,7 +39,7 @@ const SearchContainer = styled.div`
   margin-left: 25px;
   padding: 5px;
 
-  ${mobile({ margin: "0px auto"})};
+  ${mobile({ margin: "0px auto" })};
 `;
 
 const Input = styled.input`
@@ -88,15 +85,17 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   button: {
     "@media (max-width: 400px)": {
-      display: "none"
-    }
-  }
+      display: "none",
+    },
+  },
 }));
 
 const Navbar = () => {
+  const quantity = useSelector((state) => state.cart.quantity);
+
   const classes = useStyles();
   return (
     <Container>
@@ -106,27 +105,29 @@ const Navbar = () => {
             <Language>EN</Language>
           </IconButton>
           <SearchContainer>
-            <Input placeholder="Search"/>
-            <Search style={{color:"gray", fontSize:16}}/>
+            <Input placeholder="Search" />
+            <Search style={{ color: "gray", fontSize: 16 }} />
           </SearchContainer>
         </Left>
         <Center>
-        <Logo>
-          <Link to="/"  style={{ textDecoration: 'none', color: 'Black'}}>
-            Seppeo.
+          <Logo>
+            <Link to="/" style={{ textDecoration: "none", color: "Black" }}>
+              Seppeo.
             </Link>
           </Logo>
         </Center>
         <Right>
           <MenuItem>REGISTER</MenuItem>
           <MenuItem>SIGN IN</MenuItem>
-          <MenuItem>
-            <IconButton aria-label="cart">
-              <StyledBadge badgeContent={4}>
-                <ShoppingCartOutlined />
-              </StyledBadge>
-            </IconButton>
-          </MenuItem>
+          <Link to="/cart" style={{ textDecoration: "none", color: "Black" }}>
+            <MenuItem>
+              <IconButton aria-label="cart">
+                <StyledBadge badgeContent={quantity}>
+                  <ShoppingCartOutlined />
+                </StyledBadge>
+              </IconButton>
+            </MenuItem>
+          </Link>
         </Right>
       </Wrapper>
     </Container>

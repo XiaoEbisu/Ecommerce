@@ -8,6 +8,10 @@ import { useLocation } from "react-router";
 import { useState, useEffect } from "react";
 import { publicRequest } from "../requestMethods";
 import { MULTICOLOR } from "../cst";
+import axios from "axios";
+import { addProduct } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
+import { blue } from "@material-ui/core/colors";
 const Container = styled.div``;
 
 const Wrapper = styled.div`
@@ -69,7 +73,7 @@ const FilterColor = styled.div`
   border-radius: 50%;
   background: ${(props) =>
     props.color === MULTICOLOR
-      ? "linear-gradient(130deg, red,orange,yellow,green,blue,violet)"
+      ? "linear-gradient(130deg, blue,red,violet,orange,yellow,green,indigo)"
       : props.color};
   border: 1px solid black;
   margin: 0px 5px;
@@ -138,6 +142,8 @@ const Product = () => {
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     window.scrollTo(0, 0);
     const getProduct = async () => {
@@ -155,6 +161,11 @@ const Product = () => {
     } else {
       setQuantity(quantity + 1);
     }
+  };
+
+  const handleClick = () => {
+    console.log("test");
+    dispatch(addProduct({ ...product, quantity, color, size}));
   };
 
   return (
@@ -198,8 +209,8 @@ const Product = () => {
                 <Remove onClick={() => handleQuantity("dec")} />
                 <Amount>{quantity}</Amount>
                 <Add onClick={() => handleQuantity("inc")} />
-              </AmountContainer>  
-              <Button>ADD TO CART</Button>
+              </AmountContainer>
+              <Button onClick={handleClick}>ADD TO CART</Button>
             </AddContainer>
           </InfoContainer>
         </WrapperInfo>
