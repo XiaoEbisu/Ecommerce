@@ -11,7 +11,6 @@ import { MULTICOLOR } from "../cst";
 import axios from "axios";
 import { addProduct } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
-import { blue } from "@material-ui/core/colors";
 const Container = styled.div``;
 
 const Wrapper = styled.div`

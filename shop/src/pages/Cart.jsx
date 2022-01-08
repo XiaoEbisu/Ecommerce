@@ -3,7 +3,12 @@ import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { addProduct, updateProductQuantity } from "../redux/cartRedux";
+import { useDispatch } from "react-redux";
+
+import { useEffect } from "react";
 
 const Container = styled.div``;
 
@@ -106,9 +111,15 @@ const AmountContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-const ProductAmount = styled.div`
-  font-size: 24px;
-  margin: 5px;
+const ProductAmount = styled.span`
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  border: 2px solid #0e606b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0px 5px;
 `;
 
 const ProductPrice = styled.div`
@@ -167,7 +178,20 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
+  const dispatch = useDispatch();
+  const handleQuantity = (type, product) => {
+    if (type === "dec") {
+      product.quantity > 1 &&
+        dispatch(updateProductQuantity({ ...product, quantity: -1 }));
+    } else {
+      dispatch(updateProductQuantity({ ...product, quantity: 1 }));
+    }
+  };
+
   const cart = useSelector((state) => state.cart);
+
+  useEffect(() => {}, [cart]);
+
   return (
     <Container>
       <Navbar />
@@ -177,7 +201,7 @@ const Cart = () => {
         <Top>
           <TopButton>CONTINUE SHOPPING</TopButton>
           <TopTexts>
-            <TopText>Shopping Bags(2)</TopText>
+            <TopText>Shopping Bags({cart.quantity})</TopText>
             <TopText>Your wishlist(0)</TopText>
           </TopTexts>
           <TopButton type="filled">CHECKOUT NOW</TopButton>
@@ -186,43 +210,60 @@ const Cart = () => {
           <Info>
             {cart.products.map((product) => (
               <>
-              <Product>
-                <ProductDetail>
-                  <Image src= {product.img} />
-                  <Details>
-                    <ProductName>
-                      <b>Product:</b> {product.title}
-                    </ProductName>
-                    <ProductId>
-                      <b>ID:</b> {product._id}
-                    </ProductId>
-                    <ProductColor color={product.color} />
-                    <ProductSize>
-                      <b>Size:</b> {product.size}
-                    </ProductSize>  
-                  </Details>
-                </ProductDetail>
-              <PriceDetail>
-                <AmountContainer>
-                  <Add />
-                  <ProductAmount>{product.quantity}</ProductAmount>
-                  <Remove />
-                </AmountContainer>
-                <ProductPrice>
-                  {Math.round((product.price*product.quantity + Number.EPSILON) * 100) / 100}€
-                </ProductPrice>
-              </PriceDetail>
-              </Product>
-              <Hr />
+                <Product>
+                  <ProductDetail>
+                    <Link
+                      style={{ textDecoration: "none", color: "Black" }}
+                      to={`/product/${product._id}`}
+                    >
+                      <Image src={product.img} />
+                    </Link>
+                    <Details>
+                      <ProductName>
+                        <b>Product:</b> {product.title}
+                      </ProductName>
+                      <ProductId>
+                        <b>ID:</b> {product._id}
+                      </ProductId>
+                      <ProductColor color={product.color} />
+                      <ProductSize>
+                        <b>Size:</b> {product.size}
+                      </ProductSize>
+                    </Details>
+                  </ProductDetail>
+
+                  <PriceDetail>
+                    <AmountContainer>
+                      <Remove
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleQuantity("dec", product)}
+                      />
+                      <ProductAmount>{product.quantity}</ProductAmount>
+                      <Add
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleQuantity("inc", product)}
+                      />
+                    </AmountContainer>
+                    <ProductPrice>
+                      {Math.round(
+                        (product.price * product.quantity + Number.EPSILON) *
+                          100
+                      ) / 100}
+                      €
+                    </ProductPrice>
+                  </PriceDetail>
+                </Product>
+                <Hr />
               </>
             ))}
-            
           </Info>
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal: </SummaryItemText>
-              <SummaryItemPrice>{cart.total}€</SummaryItemPrice>
+              <SummaryItemPrice>
+                {Math.round((cart.total + Number.EPSILON) * 100) / 100}€
+              </SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping: </SummaryItemText>
@@ -234,7 +275,9 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total: </SummaryItemText>
-              <SummaryItemPrice>{cart.total}€</SummaryItemPrice>
+              <SummaryItemPrice>
+                {Math.round((cart.total + Number.EPSILON) * 100) / 100}€
+              </SummaryItemPrice>
             </SummaryItem>
             <Button>CHECKOUT NOW</Button>
           </Summary>
