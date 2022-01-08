@@ -34,13 +34,13 @@ const Products = ({ cat, filters, sort }) => {
   }, [cat]);
 
   useEffect(() => {
-    cat &&
+    filters &&
       setFilteredProducts(
-        products.filter((item) =>
-          Object.entries(filters).every(([key, value]) =>
+        products.filter((item) => {
+          return Object.entries(filters).every(([key, value]) =>
             item[key].includes(value)
-          )
-        )
+          );
+        })
       );
   }, [products, cat, filters]);
 
@@ -62,13 +62,11 @@ const Products = ({ cat, filters, sort }) => {
 
   return (
     <Container>
-      {cat
+      {filteredProducts && filteredProducts.length
         ? filteredProducts.map((item) => (
             <ProductItem item={item} key={item.id} />
           ))
-        : products
-            .slice(0, 8)
-            .map((item) => <ProductItem item={item} key={item.id} />)}
+        : products.map((item) => <ProductItem item={item} key={item.id} />)}
     </Container>
   );
 };

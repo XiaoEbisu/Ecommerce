@@ -43,6 +43,7 @@ const Title = styled.h1`
 
 const Desc = styled.p`
   margin: 20px 0px;
+  white-space: pre;
 `;
 
 const Price = styled.span`
@@ -150,8 +151,13 @@ const Product = () => {
       try {
         const res = await publicRequest.get("/products/find/" + id);
         setProduct(res.data);
-      } catch {}
+        setSize(res.data.size[0]);
+        if (res.data.color.length === 1) {
+          setColor(res.data.color[0]);
+        };
+      } catch (err) {}
     };
+
     getProduct();
   }, [id]);
 
@@ -164,8 +170,9 @@ const Product = () => {
   };
 
   const handleClick = () => {
-    console.log("test");
-    dispatch(addProduct({ ...product, quantity, color, size}));
+    if (!color) return;
+
+    dispatch(addProduct({ ...product, quantity, color, size }));
   };
 
   return (

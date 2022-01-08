@@ -7,9 +7,9 @@ import Newletter from "../components/Newletter";
 import Products from "../components/Products";
 import { mobile } from "../Responsive";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
-const Container = styled.div`
-`;
+const Container = styled.div``;
 
 const Title = styled.h1`
   padding-top: 20px;
@@ -41,54 +41,62 @@ const Option = styled.option`
 `;
 
 const ProductList = () => {
-
   //take category from pathname
   const location = useLocation();
   const cat = location.pathname.split("/")[2];
 
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState("latest");
+  const [sizes, setSizes] = useState([]);
+  const [colors, setColors] = useState([]);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  },[]);
+    window.scrollTo(0, 0); //when load anorther page, the cursor will reset to up of the page
+
+    const getFilterFromAPIFilter = async () => {
+      try {
+        const res = await axios.get(
+          cat
+            ? `http://localhost:5000/api/filter?cat=${cat}`
+            : `http://localhost:5000/api/filter`
+        );
+        setSizes(res.data.sizes);
+        setColors(res.data["colors"]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getFilterFromAPIFilter();
+  }, [filters.color, filters.size]); //render component first time only
 
   const handleFilters = (e) => {
     const value = e.target.value;
     setFilters({
       ...filters,
       [e.target.name]: value,
-    })
+    });
   };
 
   return (
     <Container>
       <Navbar />
       <Announcement />
-      <Title>{cat.toUpperCase()}</Title>
+      <Title>{cat? cat.toUpperCase() : "ALL PRODUCTS"}</Title>
       <FilterContainer>
         <Filter>
           <FilterText>Filter products:</FilterText>
           <Select name="color" onChange={handleFilters}>
-            <Option disabled >
-              Color
-            </Option>
-            <Option>white</Option>
-            <Option>black</Option>
-            <Option>red</Option>
-            <Option>blue</Option>
-            <Option>yellow</Option>
-            <Option>green</Option>
-            <Option>pink</Option>
+            <Option disabled selected>Color</Option>
+            {colors.map((color) => (
+              <Option value={color}>{color}</Option>
+            ))}
           </Select>
           <Select name="size" onChange={handleFilters}>
-            <Option disabled >
-              Size
-            </Option>
-            <Option>50g</Option>
-            <Option>100g</Option>
-            <Option>pack of 10</Option>
-            <Option>pack of 12</Option>
+            <Option disabled selected>Size</Option>
+            {sizes.map((size) => (
+              <Option value={size}>{size}</Option>
+            ))}
           </Select>
         </Filter>
         <Filter>

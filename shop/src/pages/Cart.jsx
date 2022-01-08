@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import { useSelector } from "react-redux";
 
 const Container = styled.div``;
 
@@ -78,14 +79,15 @@ const ProductName = styled.span``;
 const ProductId = styled.span``;
 
 const ProductColor = styled.div`
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: ${(props) =>
     props.color === "multicolor"
-      ? "linear-gradient(130deg, red,orange,yellow,green,blue,violet)"
+      ? "linear-gradient(130deg, blue,red,violet,orange,yellow,green,indigo)"
       : props.color};
-  border: 2px solid black;
+  border: 1px solid black;
+  margin: 0px 5px;
 `;
 
 const ProductSize = styled.span``;
@@ -165,6 +167,7 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
+  const cart = useSelector((state) => state.cart);
   return (
     <Container>
       <Navbar />
@@ -181,79 +184,57 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
-            <Product>
-              <ProductDetail>
-                <Image src="https://alitools.io/en/showcase/image?url=https%3A%2F%2Fae01.alicdn.com%2Fkf%2FHf5cb41a0a8cc43bfbad8ab6488b4f137F.jpg_480x480.jpg_.webp" />
-                <Details>
-                  <ProductName>
-                    <b>Product: </b>
-                    Metal Hooks Crochet Kit 2-10mm
-                  </ProductName>
-                  <ProductId>
-                    <b>ID: </b>
-                    1982361957137
-                  </ProductId>
-                  <ProductColor color="multicolor" />
-                  <ProductSize>
-                    <b>Size: </b>3
-                  </ProductSize>
-                </Details>
-              </ProductDetail>
+            {cart.products.map((product) => (
+              <>
+              <Product>
+                <ProductDetail>
+                  <Image src= {product.img} />
+                  <Details>
+                    <ProductName>
+                      <b>Product:</b> {product.title}
+                    </ProductName>
+                    <ProductId>
+                      <b>ID:</b> {product._id}
+                    </ProductId>
+                    <ProductColor color={product.color} />
+                    <ProductSize>
+                      <b>Size:</b> {product.size}
+                    </ProductSize>  
+                  </Details>
+                </ProductDetail>
               <PriceDetail>
                 <AmountContainer>
                   <Add />
-                  <ProductAmount>2</ProductAmount>
+                  <ProductAmount>{product.quantity}</ProductAmount>
                   <Remove />
                 </AmountContainer>
-                <ProductPrice>15 €</ProductPrice>
+                <ProductPrice>
+                  {Math.round((product.price*product.quantity + Number.EPSILON) * 100) / 100}€
+                </ProductPrice>
               </PriceDetail>
-            </Product>
-            <Hr />
-            <Product>
-              <ProductDetail>
-                <Image src="https://d2tk9av7ph0ga6.cloudfront.net/image/catalog/2019/rb-88-colorbag-8-700xauto.jpg" />
-                <Details>
-                  <ProductName>
-                    <b>Product: </b>
-                    Rainbow cotton yarn 3mm
-                  </ProductName>
-                  <ProductId>
-                    <b>ID: </b>
-                    107863598273
-                  </ProductId>
-                  <ProductColor color="#fad2e1" />
-                  <ProductSize>
-                    <b>Size: </b>50g
-                  </ProductSize>
-                </Details>
-              </ProductDetail>
-              <PriceDetail>
-                <AmountContainer>
-                  <Add />
-                  <ProductAmount>3</ProductAmount>
-                  <Remove />
-                </AmountContainer>
-                <ProductPrice>9 €</ProductPrice>
-              </PriceDetail>
-            </Product>
+              </Product>
+              <Hr />
+              </>
+            ))}
+            
           </Info>
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal: </SummaryItemText>
-              <SummaryItemPrice>24 €</SummaryItemPrice>
+              <SummaryItemPrice>{cart.total}€</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping: </SummaryItemText>
-              <SummaryItemPrice>4.99 €</SummaryItemPrice>
+              <SummaryItemPrice>4.99€</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Discount: </SummaryItemText>
-              <SummaryItemPrice>- 4.99 €</SummaryItemPrice>
+              <SummaryItemPrice>- 4.99€</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total: </SummaryItemText>
-              <SummaryItemPrice>24 €</SummaryItemPrice>
+              <SummaryItemPrice>{cart.total}€</SummaryItemPrice>
             </SummaryItem>
             <Button>CHECKOUT NOW</Button>
           </Summary>
