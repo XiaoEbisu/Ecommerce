@@ -3,12 +3,16 @@ import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { addProduct, updateProductQuantity } from "../redux/cartRedux";
 import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import StripeCheckout from "react-stripe-checkout";
+import { userRequest } from "../requestMethods";
 
-import { useEffect } from "react";
+const KEY = process.env.REACT_APP_STRIPE;
+console.log(KEY);
 
 const Container = styled.div``;
 
@@ -192,6 +196,26 @@ const Cart = () => {
 
   useEffect(() => {}, [cart]);
 
+  const [stripeToken, setStripeToken] = useState(null);
+  const onToken = (token) => {
+    setStripeToken(token);
+  };
+  const history = useHistory();
+
+  useEffect(() => {
+    const makeRequest = async () => {
+      try {
+        const res = await userRequest.post("/checkout/payment", {
+          tokenId: stripeToken.id,
+          amount: Math.round((cart.total + Number.EPSILON) * 100),
+        });
+        console.log(res);
+        history.push ("/success", {data: res.data}); 
+      } catch (err) {}
+    };
+    stripeToken && makeRequest();
+  }, [stripeToken, cart.total, history]);
+
   return (
     <Container>
       <Navbar />
@@ -199,7 +223,12 @@ const Cart = () => {
       <Wrapper>
         <Title>YOUR BAG</Title>
         <Top>
-          <TopButton>CONTINUE SHOPPING</TopButton>
+          <Link
+            style={{ textDecoration: "none", color: "Black" }}
+            to="/products/"
+          >
+            <TopButton>CONTINUE SHOPPING</TopButton>
+          </Link>
           <TopTexts>
             <TopText>Shopping Bags({cart.quantity})</TopText>
             <TopText>Your wishlist(0)</TopText>
@@ -279,7 +308,19 @@ const Cart = () => {
                 {Math.round((cart.total + Number.EPSILON) * 100) / 100}€
               </SummaryItemPrice>
             </SummaryItem>
-            <Button>CHECKOUT NOW</Button>
+            <StripeCheckout
+              name="Seppeo shop"
+              image="/seppeo.png"
+              billingAddress
+              shippingAddress
+              description={`Your total is ${Math.round((cart.total + Number.EPSILON) * 100) / 100}€`}
+              amount={Math.round((cart.total + Number.EPSILON) * 100)}
+              currency="EUR"
+              token={onToken}
+              stripeKey={KEY}
+            >
+              <Button>CHECKOUT NOW</Button>
+            </StripeCheckout>
           </Summary>
         </Bottom>
       </Wrapper>
