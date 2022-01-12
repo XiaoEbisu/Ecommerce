@@ -1,4 +1,9 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../redux/apiCalls";
+import { CircularProgress, makeStyles } from "@material-ui/core";
+import { green } from "@material-ui/core/colors";
 
 const Container = styled.div`
   width: 100vw;
@@ -73,13 +78,14 @@ const Link = styled.a`
 `;
 
 const Button = styled.button`
+  position: relative;
   width: 40%;
   border: 1px solid;
   padding: 15px 20px;
   color: white;
   cursor: pointer;
   margin-top: 10px;
-  
+
   background: linear-gradient(to left, #fff4f1 50%, #0e606b 50%);
   background-size: 200%;
   background-position: left bottom;
@@ -88,25 +94,70 @@ const Button = styled.button`
   &:hover {
     background-color: #fff4f1;
     color: black;
-    background-position:right;
-    border:1px solid #0e606b;
+    background-position: right;
+    border: 1px solid #0e606b;
   }
 `;
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    alignItems: "center",
+  },
+  wrapper: {
+    margin: theme.spacing(1),
+    position: "relative",
+  },
+  buttonSuccess: {
+    backgroundColor: green[500],
+    "&:hover": {
+      backgroundColor: green[700],
+    },
+  },
+  buttonProgress: {
+    color: green[500],
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12,
+  },
+}));
+
 const Login = () => {
+  const classes = useStyles();
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const { isFetching, error } = useSelector((state) => state.user);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    login(dispatch, { username, password });
+  };
+
   return (
     <Container>
       <Wrapper>
         <Title>LOGIN</Title>
         <Form>
-          <Input placeholder="Username" />
-          <Input placeholder="Password" />
+          <Input
+            placeholder="Username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Input
+            placeholder="Password"
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <LinkWrapper>
             <Link>Don't remember your password?</Link>
             <Link>Don't have an account?</Link>
           </LinkWrapper>
           <ButtonsWrapper>
-            <Button>LOGIN</Button>
+            <Button onClick={handleClick}>LOGIN</Button>
+            {isFetching && <CircularProgress size={24} className={classes.buttonProgress}/>}
           </ButtonsWrapper>
         </Form>
       </Wrapper>
