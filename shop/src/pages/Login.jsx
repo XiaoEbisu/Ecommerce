@@ -2,7 +2,12 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/apiCalls";
-import { CircularProgress, makeStyles } from "@material-ui/core";
+import {
+  CircularProgress,
+  makeStyles,
+  Backdrop,
+  CheckIcon,
+} from "@material-ui/core";
 import { green } from "@material-ui/core/colors";
 
 const Container = styled.div`
@@ -97,6 +102,14 @@ const Button = styled.button`
     background-position: right;
     border: 1px solid #0e606b;
   }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+`;
+
+const Error = styled.span`
+  color: red;
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -114,12 +127,18 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: green[700],
     },
   },
+  buttonSuccess: {
+    backgroundColor: green[500],
+    "&:hover": {
+      backgroundColor: green[700]
+    }
+  },
   buttonProgress: {
     color: green[500],
     position: "absolute",
     top: "50%",
     left: "50%",
-    marginTop: -12,
+    marginTop: 105,
     marginLeft: -12,
   },
 }));
@@ -129,8 +148,9 @@ const Login = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   const dispatch = useDispatch();
-  const { isFetching, error } = useSelector((state) => state.user);
+  const { currentUser, isFetching, error } = useSelector((state) => state.user);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -156,8 +176,15 @@ const Login = () => {
             <Link>Don't have an account?</Link>
           </LinkWrapper>
           <ButtonsWrapper>
-            <Button onClick={handleClick}>LOGIN</Button>
-            {isFetching && <CircularProgress size={24} className={classes.buttonProgress}/>}
+            <Button onClick={handleClick} disabled={isFetching}>LOGIN</Button>
+            {isFetching && (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            )}
+            {!currentUser && error ? (
+              <Error>Something went wrong...</Error>
+            ) : (
+              currentUser && <Error>You in</Error>
+            )}
           </ButtonsWrapper>
         </Form>
       </Wrapper>
