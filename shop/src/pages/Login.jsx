@@ -7,8 +7,14 @@ import {
   makeStyles,
   Backdrop,
   CheckIcon,
+  Snackbar,
 } from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
 import { green } from "@material-ui/core/colors";
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const Container = styled.div`
   width: 100vw;
@@ -108,10 +114,6 @@ const Button = styled.button`
   }
 `;
 
-const Error = styled.span`
-  color: red;
-`;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -130,8 +132,8 @@ const useStyles = makeStyles((theme) => ({
   buttonSuccess: {
     backgroundColor: green[500],
     "&:hover": {
-      backgroundColor: green[700]
-    }
+      backgroundColor: green[700],
+    },
   },
   buttonProgress: {
     color: green[500],
@@ -141,6 +143,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 105,
     marginLeft: -12,
   },
+  alert: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: 40,
+  },
 }));
 
 const Login = () => {
@@ -148,6 +156,7 @@ const Login = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [open, setOpen] = useState(false);
 
   const dispatch = useDispatch();
   const { currentUser, isFetching, error } = useSelector((state) => state.user);
@@ -155,6 +164,14 @@ const Login = () => {
   const handleClick = (e) => {
     e.preventDefault();
     login(dispatch, { username, password });
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
   };
 
   return (
@@ -176,14 +193,36 @@ const Login = () => {
             <Link>Don't have an account?</Link>
           </LinkWrapper>
           <ButtonsWrapper>
-            <Button onClick={handleClick} disabled={isFetching}>LOGIN</Button>
+            <Button onClick={handleClick} disabled={isFetching}>
+              LOGIN
+            </Button>
             {isFetching && (
               <CircularProgress size={24} className={classes.buttonProgress} />
             )}
             {!currentUser && error ? (
-              <Error>Something went wrong...</Error>
+              <Snackbar
+                className={classes.alert}
+                open={open}
+                autoHideDuration={3000}
+                onClose={handleClose}
+              >
+                <Alert onClose={handleClose} severity="error">
+                  Wrong credentials!
+                </Alert>
+              </Snackbar>
             ) : (
-              currentUser && <Error>You in</Error>
+              currentUser && (
+                <Snackbar
+                  className={classes.alert}
+                  open={open}
+                  autoHideDuration={3000}
+                  onClose={handleClose}
+                >
+                  <Alert onClose={handleClose} severity="success">
+                    You're in!
+                  </Alert>
+                </Snackbar>
+              )
             )}
           </ButtonsWrapper>
         </Form>

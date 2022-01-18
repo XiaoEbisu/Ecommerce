@@ -13,9 +13,10 @@ import {
 } from "react-router-dom";
 import Products from "./components/Products";
 import './App.css';
+import { useSelector } from "react-redux";
 
 const App = () => {
-  const user = false;
+  const user = useSelector((state) => state.user.currentUser);
   return (
     <Router>
       <Switch>
