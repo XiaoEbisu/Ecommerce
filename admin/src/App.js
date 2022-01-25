@@ -16,7 +16,7 @@ function App() {
       <Topbar />
       <Container>
         <Sidebar />
-        <Other>Other page</Other>
+        <Other />
       </Container>
     </div>
   );
