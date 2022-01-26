@@ -1,7 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import { LineStyle, Timeline, TrendingUp } from "@material-ui/icons";
-import { rgbToHex } from "@material-ui/core";
+import {
+  LineStyle,
+  Timeline,
+  TrendingUp,
+  PermIdentity,
+  Storefront,
+  AttachMoney,
+  BarChart,
+  MailOutline,
+  DynamicFeed,
+  ChatBubbleOutline,
+  WorkOutline,
+  Report,
+} from "@material-ui/icons";
 
 const Container = styled.div`
   flex: 1;
@@ -23,7 +35,7 @@ const Menu = styled.div`
 
 const Title = styled.h3`
   font-size: 13px;
-  color: rgb(180, 180, 180);
+  color: rgb(158, 157, 157);
 `;
 
 const List = styled.ul`
@@ -38,15 +50,18 @@ const Item = styled.li`
   display: flex;
   align-items: center;
   border-radius: 10px;
-  background-color: ${(props) => props.active === "true" ? "rgb(133, 133, 185)" : ""};
-  color: ${(props) => props.active === "true" ? "white" : ""};
+  background-color: ${(props) =>
+    props.active === "true" ? "rgb(133, 133, 185)" : ""};
+  color: ${(props) => (props.active === "true" ? "white" : "")};
 
-  &:hover{
+  &:hover {
     background-color: rgb(133, 133, 185);
     color: white;
     transition: all 0.3s ease;
   }
 `;
+
+const sIcon = { marginRight: "5px", fontSize: "20px !important" };
 
 const Sidebar = () => {
   return (
@@ -55,17 +70,68 @@ const Sidebar = () => {
         <Menu>
           <Title>Dashboard</Title>
           <List>
-            <Item active="true">
-              <LineStyle style={{marginRight: "5px", fontSize: "20px"}}/>
+            <Item>
+              <LineStyle style={sIcon} />
               Home
             </Item>
             <Item>
-              <Timeline style={{marginRight: "5px", fontSize: "20px"}}/>
+              <Timeline style={sIcon} />
               Analytics
             </Item>
             <Item>
-              <TrendingUp style={{marginRight: "5px", fontSize: "20px"}}/>
+              <TrendingUp style={sIcon} />
               Sales
+            </Item>
+          </List>
+        </Menu>
+        <Menu>
+          <Title>Quick Menu</Title>
+          <List>
+            <Item>
+              <PermIdentity style={sIcon} />
+              Users
+            </Item>
+            <Item>
+              <Storefront style={sIcon} />
+              Products
+            </Item>
+            <Item>
+              <AttachMoney style={sIcon} />
+              Transactions
+            </Item>
+            <Item>
+              <BarChart style={sIcon} />
+              Reports
+            </Item>
+          </List>
+        </Menu>
+        <Menu>
+          <Title>Notifications</Title>
+          <List>
+            <Item>
+              <MailOutline style={sIcon} />
+              Mail
+            </Item>
+            <Item>
+              <DynamicFeed style={sIcon} />
+              Feedback
+            </Item>
+            <Item>
+              <ChatBubbleOutline style={sIcon} />
+              Messages
+            </Item>
+          </List>
+        </Menu>
+        <Menu>
+          <Title>Staff</Title>
+          <List>
+            <Item>
+              <WorkOutline style={sIcon} />
+              Manage
+            </Item>
+            <Item>
+              <Report style={sIcon} />
+              Reports
             </Item>
           </List>
         </Menu>
